@@ -18,8 +18,8 @@
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <span>🧘</span> 太極拳ナビ
             </h1>
-            <div class="text-sm bg-emerald-700 px-3 py-1.5 rounded-full text-emerald-100 font-medium">
-                日本武術太極拳連盟基準
+            <div id="sync-status" class="text-xs bg-emerald-700 px-3 py-1.5 rounded-full text-emerald-100 font-medium">
+                同期中...
             </div>
         </div>
     </header>
@@ -50,8 +50,6 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto p-4 md:p-6 flex-grow w-full mb-16 space-y-6">
-
-        <!-- Tab 0: Intro & Basics -->
         <section id="section-intro" class="space-y-6">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <h2 class="text-xl font-bold text-emerald-900 mb-4 flex items-center gap-2">
@@ -59,21 +57,16 @@
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="keywords-list"></div>
             </div>
-
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <h2 class="text-xl font-bold text-emerald-900 mb-2">🦶 基本の足形 (5種)</h2>
-                <p class="text-sm text-slate-600 mb-5">項目をタッチして詳細を確認し、メモや練習写真を残せます。</p>
                 <div id="foot-forms-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
-
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <h2 class="text-xl font-bold text-emerald-900 mb-2">✋ 基本の手形 (3種)</h2>
-                <p class="text-sm text-slate-600 mb-5">項目をタッチして詳細を確認し、メモや練習写真を残せます。</p>
                 <div id="hand-forms-list" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
             </div>
         </section>
 
-        <!-- Grade 5: 入門太極拳 -->
         <section id="section-grade5" class="hidden space-y-4">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
@@ -89,7 +82,6 @@
             </div>
         </section>
 
-        <!-- Grade 4: 初級太極拳 -->
         <section id="section-grade4" class="hidden space-y-4">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
@@ -105,7 +97,6 @@
             </div>
         </section>
 
-        <!-- Grade 3: 24式 前半 -->
         <section id="section-grade3" class="hidden space-y-4">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
@@ -121,7 +112,6 @@
             </div>
         </section>
 
-        <!-- Grade 2: 24式 後半 -->
         <section id="section-grade2" class="hidden space-y-4">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
@@ -137,7 +127,6 @@
             </div>
         </section>
 
-        <!-- Grade 1 / Dan: 全套路 -->
         <section id="section-grade1" class="hidden space-y-4">
             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
@@ -149,11 +138,9 @@
                         完了: <span id="count-grade1" class="text-emerald-700 font-extrabold text-lg">0</span> / 24 式
                     </div>
                 </div>
-                <p class="text-sm text-slate-600 mb-5">全ての技を通しで練習し、スムーズな流れと型を習得しましょう。</p>
                 <div id="list-grade1" class="space-y-4"></div>
             </div>
         </section>
-
     </main>
 
     <!-- Detail Modal -->
@@ -168,11 +155,9 @@
     <div id="crop-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex flex-col items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 text-center">
             <h3 class="text-lg font-bold text-slate-900">📷 写真の拡大・縮小と切り取り</h3>
-            <p class="text-xs text-slate-500">スライダーで大きさを調整し、写真を動かして位置を合わせてください。</p>
             <div class="relative w-full max-h-[45vh] overflow-hidden bg-black rounded-2xl flex items-center justify-center">
                 <canvas id="crop-canvas" class="cursor-crosshair max-w-full"></canvas>
             </div>
-            <!-- Zoom Slider -->
             <div class="flex items-center gap-3 px-2">
                 <span class="text-xs font-bold text-slate-600">小</span>
                 <input type="range" id="zoom-slider" min="0.1" max="3" step="0.05" value="1" class="w-full accent-emerald-700 cursor-pointer" oninput="onZoomSlider(this.value)">
@@ -185,20 +170,18 @@
         </div>
     </div>
 
-    <!-- Fullscreen Image Zoom Modal -->
+    <!-- Fullscreen Zoom Modal -->
     <div id="zoom-modal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4" onclick="closeZoom()">
         <button onclick="closeZoom()" class="absolute top-5 right-5 bg-white/20 hover:bg-white/40 text-white w-12 h-12 rounded-full font-bold text-2xl flex items-center justify-center transition">✕</button>
         <img id="zoomed-img" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl" onclick="event.stopPropagation()">
     </div>
 
-    <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500 mt-auto">
         太極拳トレーニングアプリ &copy; 2026
     </footer>
 
     <script>
-        // ★発行したGASのウェブアプリURLを指定
-        const GAS_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwLW-L95JLS9d7ysxEbJyARPjeosnhiyb5kG18D6h6xqL9WN1GBqU6DnUufBfhwkarq-w/exec';
+        const GAS_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbysoGcKBeL1p6kxrDmvAMAJ-crbTX9RXD6hZVzGODGgI8zy1zyocRNHOberVWjb4HZCAg/exec';
 
         const keywords = [
             { id: "kw_1", name: "調心", pinyin: "Tiáo xīn", meaning: "心の調整", desc: "無心になって動作に集中し、心を静めて意識を動作に導きます。", icon: "🧠" },
@@ -207,24 +190,24 @@
         ];
 
         const footForms = [
-            { id: "foot_1", name: "馬歩", pinyin: "Mǎ bù", meaning: "乗馬立ち", desc: "両足を肩幅より広く開き、膝を曲げて腰を落とします。ひざが内側に入らないよう注意しましょう。" },
-            { id: "foot_2", name: "弓歩", pinyin: "Gōng bù", meaning: "弓の歩幅", desc: "前方に踏み出した片足を曲げて重みをかけ、後ろ足を伸ばします。前のひざがつま先より前に出ないようにします。" },
+            { id: "foot_1", name: "馬歩", pinyin: "Mǎ bù", meaning: "乗馬立ち", desc: "両足を肩幅より広く開き、膝を曲げて腰を落とします。" },
+            { id: "foot_2", name: "弓歩", pinyin: "Gōng bù", meaning: "弓の歩幅", desc: "前方に踏み出した片足を曲げて重みをかけ、後ろ足を伸ばします。" },
             { id: "foot_3", name: "虚歩", pinyin: "Xū bù", meaning: "虚の歩幅", desc: "後ろ足に100%重心を置き、前足がつま先を軽く床につけます。" },
-            { id: "foot_4", name: "独立歩", pinyin: "Dú lì bù", meaning: "片足立ち", desc: "片方の膝を曲げて上げ、もう片方の足で身体を支える片足立つの形です。" }
+            { id: "foot_4", name: "独立歩", pinyin: "Dú lì bù", meaning: "片足立ち", desc: "片方の膝を曲げて上げ、もう片方の足で身体を支えます。" }
         ];
 
         const handForms = [
-            { id: "hand_1", name: "掌", pinyin: "Zhǎng", meaning: "手の平", desc: "自然に開いた手の形。あらゆる動きで最も多く使われます。指先まで気を配ります。" },
+            { id: "hand_1", name: "掌", pinyin: "Zhǎng", meaning: "手の平", desc: "自然に開いた手の形。あらゆる動きで最も多く使われます。" },
             { id: "hand_2", name: "拳", pinyin: "Quán", meaning: "こぶし", desc: "こぶしを握った形。うずらの卵を持つようにふわっと軽く握ります。" },
-            { id: "hand_3", name: "鉤手", pinyin: "Gōu shǒu", meaning: "鉤手（フック）", desc: "手首を曲げ、指先を一点に集めてつまみ上げるようにする形です。" }
+            { id: "hand_3", name: "鉤手", pinyin: "Gōu shǒu", meaning: "鉤手（フック）", desc: "手首を曲げ、指先を一点に集めてつまみ上げる形です。" }
         ];
 
         const introForms = [
-            { id: "i1", name: "預備式", pinyin: "Yù bèi shì", meaning: "準備姿勢", desc: "足を肩幅に開き、リラックスして立ちます。雑念を払って呼吸を整えます。" },
+            { id: "i1", name: "預備式", pinyin: "Yù bèi shì", meaning: "準備姿勢", desc: "足を肩幅に開き、リラックスして立ちます。" },
             { id: "i2", name: "起勢", pinyin: "Qǐ shì", meaning: "始動の構え", desc: "手を横から上げ、体前におろします。" },
             { id: "i3", name: "手揮琵琶", pinyin: "Shǒu huī pí pá", meaning: "琵琶をかき鳴らす", desc: "虚歩で琵琶を抱く形の姿勢を作ります。" },
             { id: "i4", name: "倒巻肱", pinyin: "Dào juàn gōng", meaning: "後ろ向きに腕を巻く", desc: "後退しながら交互に腕を回す動きです。" },
-            { id: "i5", name: "左右野馬分鬃", pinyin: "Zuǒ yòu yě mǎ fēn zōng", meaning: "野馬のたてがみ分ける", desc: "馬のたてがみを分け開くように体をひねりながら押し出します。" },
+            { id: "i5", name: "左右野馬分鬃", pinyin: "Zuǒ yòu yě mǎ fēn zōng", meaning: "野馬のたてがみ分ける", desc: "体をひねりながら押し出します。" },
             { id: "i6", name: "単鞭", pinyin: "Dān biān", meaning: "単鞭", desc: "片方の手でフックを作り、もう片方の手で掌を大きく押し出します。" },
             { id: "i7", name: "十字手", pinyin: "Shí zì shǒu", meaning: "十字の手", desc: "両腕をクロスさせながら斜め十字の形を作ります。" },
             { id: "i8", name: "収勢", pinyin: "Shōu shì", meaning: "収めの構え", desc: "気を収め、最初の自然な姿勢に戻ります。" }
@@ -234,7 +217,7 @@
             { id: "b1", name: "起勢", pinyin: "Qǐ shì", meaning: "始動の構え", desc: "腕の持ち上げと抑えを行います。" },
             { id: "b2", name: "左右野馬分鬃", pinyin: "Zuǒ yòu yě mǎ fēn zōng", meaning: "野馬のたてがみ分ける（左右）", desc: "弓歩になりながら手を分け開きます。" },
             { id: "b3", name: "倒巻肱", pinyin: "Dào juàn gōng", meaning: "後ろ向きに腕を巻く", desc: "下がりつつ相手の胸を打ちます。" },
-            { id: "b4", name: "左攬雀尾", pinyin: "Zuǒ lǎn què wěi", meaning: "雀の尾をつかむ（左）", desc: "左手から掤（ポン）、捋（リー）、擠（ジー）、按（アン）。" },
+            { id: "b4", name: "左攬雀尾", pinyin: "Zuǒ lǎn què wěi", meaning: "雀の尾をつかむ（左）", desc: "左手から掤、捋、擠、按。" },
             { id: "b5", name: "右攬雀尾", pinyin: "Yòu lǎn què wěi", meaning: "雀の尾をつかむ（右）", desc: "振り返り右手から掤捋擠按を行います。" },
             { id: "b6", name: "単鞭", pinyin: "Dān biān", meaning: "単鞭", desc: "左掌は鞭を振る様に行います。" },
             { id: "b7", name: "十字手", pinyin: "Shí zì shǒu", meaning: "十字の手", desc: "斜め十字の形を作ります。" },
@@ -243,34 +226,34 @@
 
         const grade3Forms = [
             { id: 1, name: "起勢", pinyin: "qǐ shì", meaning: "起勢", desc: "両足を肩幅に開き、腕をゆっくり上下させて呼吸と心を落ち着かせます。" },
-            { id: 2, name: "左右野馬分鬃", pinyin: "zuǒ yòu yě mǎ fēn zōng", meaning: "左右野馬分鬃", desc: "左右交互に身体をひねりながら、腕を分けるように押し出す動作です。" },
-            { id: 3, name: "白鶴亮翅", pinyin: "bái hè liàng chì", meaning: "白鶴亮翅", desc: "片足を後ろに引いて虚歩を作り、片腕を上で開き、もう片腕を下に構えます。" },
+            { id: 2, name: "左右野馬分鬃", pinyin: "zuǒ yòu yě mǎ fēn zōng", meaning: "左右野馬分鬃", desc: "左右交互に身体をひねりながら押し出します。" },
+            { id: 3, name: "白鶴亮翅", pinyin: "bái hè liàng chì", meaning: "白鶴亮翅", desc: "虚歩を作り、片腕を上で開き、もう片腕を下に構えます。" },
             { id: 4, name: "左右摟膝拗歩", pinyin: "zuǒ yòu lōu xī ào bù", meaning: "左右摟膝拗歩", desc: "膝を払いながら弓歩になり、反対の手で掌を押し出します。" },
-            { id: 5, name: "手揮琵琶", pinyin: "shǒu huī pí pá", meaning: "手揮琵琶", desc: "片足を一歩前に出し、両手で琵琶を抱えるような優雅な姿勢を作ります。" },
-            { id: 6, name: "左右倒巻肱", pinyin: "zuǒ yòu dào juàn gōng", meaning: "左右倒巻肱", desc: "後退しながら、交互に腕を回して身を守る優美な動作です。" },
-            { id: 7, name: "左攬雀尾", pinyin: "zuǒ lǎn què wěi", meaning: "左攬雀尾", desc: "太極拳の基本手技である「掤・捋・擠・按」の連続動作です。" },
-            { id: 8, name: "右攬雀尾", pinyin: "yòu lǎn què wěi", meaning: "右攬雀尾", desc: "右側を向いて同様に「掤・捋・擠・按」の動作を行います。" },
-            { id: 9, name: "単鞭", pinyin: "dān biān", meaning: "単鞭", desc: "片方の手でフック（鉤手）を作り、もう片方の手で掌を大きく押し出します。" },
-            { id: 10, name: "雲手", pinyin: "yún shǒu", meaning: "雲手", desc: "両手を雲のように優しく目の前で円を描くように左右交互に動かします。" },
-            { id: 11, name: "単鞭", pinyin: "dān biān", meaning: "単鞭", desc: "雲手から再び単鞭の姿勢へと変化します。" },
-            { id: 12, name: "高探馬", pinyin: "gāo tàn mǎ", meaning: "高探馬", desc: "虚歩になりながら、片手を前方に伸ばし、もう片手を腰に添えます。" },
-            { id: 13, name: "収勢", pinyin: "shōu shì", meaning: "収勢", desc: "両手をゆっくりとおろし、最初の自然な姿勢に戻ります。" }
+            { id: 5, name: "手揮琵琶", pinyin: "shǒu huī pí pá", meaning: "手揮琵琶", desc: "両手で琵琶を抱えるような優雅な姿勢を作ります。" },
+            { id: 6, name: "左右倒巻肱", pinyin: "zuǒ yòu dào juàn gōng", meaning: "左右倒巻肱", desc: "後退しながら交互に腕を回します。" },
+            { id: 7, name: "左攬雀尾", pinyin: "zuǒ lǎn què wěi", meaning: "左攬雀尾", desc: "「掤・捋・擠・按」の連続動作です。" },
+            { id: 8, name: "右攬雀尾", pinyin: "yòu lǎn què wěi", meaning: "右攬雀尾", desc: "右側を向いて同様に行います。" },
+            { id: 9, name: "単鞭", pinyin: "dān biān", meaning: "単鞭", desc: "片方の手でフックを作り、もう片方の手で掌を大きく押し出します。" },
+            { id: 10, name: "雲手", pinyin: "yún shǒu", meaning: "雲手", desc: "両手を雲のように優しく目の前で円を描きます。" },
+            { id: 11, name: "単鞭", pinyin: "dān biān", meaning: "単鞭", desc: "雲手から再び単鞭の姿勢へ。" },
+            { id: 12, name: "高探馬", pinyin: "gāo tàn mǎ", meaning: "高探馬", desc: "虚歩になりながら、片手を前方に伸ばします。" },
+            { id: 13, name: "収勢", pinyin: "shōu shì", meaning: "収勢", desc: "両手をゆっくりとおろし、元の姿勢に戻ります。" }
         ];
 
         const grade2Forms = [
-            { id: 1, name: "高探馬", pinyin: "gāo tàn mǎ", meaning: "高探馬", desc: "虚歩になりながら、片手を前方に伸ばし、もう片手を腰に添えます。" },
-            { id: 2, name: "右蹬脚", pinyin: "yòu dēng jiǎo", meaning: "右蹬脚", desc: "バランスをとりながら、右足のかかとで前方を発力して蹴り出します。" },
-            { id: 3, name: "双峰貫耳", pinyin: "shuāng fēng guàn ěr", meaning: "双峰貫耳", desc: "両こぶしを相手のこめかみに向かって弧を描くように打ち込みます。" },
-            { id: 4, name: "転身左蹬脚", pinyin: "zhuǎn shēn zuǒ dēng jiǎo", meaning: "転身左蹬脚", desc: "方向転換し、今度は左足のかかとで前方を蹴ります。" },
-            { id: 5, name: "左下勢独立", pinyin: "zuǒ xià shì dú lì", meaning: "左下勢独立", desc: "体を深く沈めてスライドし、そこから片足で立ち上がります。" },
-            { id: 6, name: "右下勢独立", pinyin: "yòu xià shì dú lì", meaning: "右下勢独立", desc: "反対側も同様に深く沈み込んでから、片足でしっかりと立ちます。" },
-            { id: 7, name: "左右穿梭", pinyin: "zuǒ yòu chuān suō", meaning: "左右穿梭", desc: "体を斜めに向けて、相手の横をすり抜けるように掌で押し出します。" },
-            { id: 8, name: "海底針", pinyin: "hǎi dǐ zhēn", meaning: "海底針", desc: "上体を前に倒し、指先で地面を指すように下向きに突きます。" },
-            { id: 9, name: "閃通臂", pinyin: "shǎn tōng bèi", meaning: "閃通臂", desc: "腕を頭上に掲げながら、体を斜めに開いて身構えます。" },
-            { id: 10, name: "転身搬攔捶", pinyin: "zhuǎn shēn bān lán chuí", meaning: "転身搬攔捶", desc: "体を回転させ、相手の攻撃を受け流しながらこぶしで突きます。" },
-            { id: 11, name: "如封似閉", pinyin: "rú fēng sì bì", meaning: "如封似閉", desc: "両手を前方に押し出し、相手からの力を受け止めて包み込みます。" },
-            { id: 12, name: "十字手", pinyin: "shí zì shǒu", meaning: "十字手", desc: "両腕をクロスさせながら、胸の前に円を描いて立ち上がります。" },
-            { id: 13, name: "収勢", pinyin: "shōu shì", meaning: "収勢", desc: "両手をゆっくりとおろし、最初の自然な姿勢に戻ります。" }
+            { id: 1, name: "高探馬", pinyin: "gāo tàn mǎ", meaning: "高探馬", desc: "虚歩になりながら、片手を前方に伸ばします。" },
+            { id: 2, name: "右蹬脚", pinyin: "yòu dēng jiǎo", meaning: "右蹬脚", desc: "右足のかかとで前方を発力して蹴り出します。" },
+            { id: 3, name: "双峰貫耳", pinyin: "shuāng fēng guàn ěr", meaning: "双峰貫耳", desc: "両こぶしを相手のこめかみに向かって打ち込みます。" },
+            { id: 4, name: "転身左蹬脚", pinyin: "zhuǎn shēn zuǒ dēng jiǎo", meaning: "転身左蹬脚", desc: "方向転換し、左足のかかとで前方を蹴ります。" },
+            { id: 5, name: "左下勢独立", pinyin: "zuǒ xià shì dú lì", meaning: "左下勢独立", desc: "体を深く沈めてスライドし、片足で立ち上がります。" },
+            { id: 6, name: "右下勢独立", pinyin: "yòu xià shì dú lì", meaning: "右下勢独立", desc: "反対側も同様に行います。" },
+            { id: 7, name: "左右穿梭", pinyin: "zuǒ yòu chuān suō", meaning: "左右穿梭", desc: "体を斜めに向けて掌で押し出します。" },
+            { id: 8, name: "海底針", pinyin: "hǎi dǐ zhēn", meaning: "海底針", desc: "上体を前に倒し、下向きに突きます。" },
+            { id: 9, name: "閃通臂", pinyin: "shǎn tōng bèi", meaning: "閃通臂", desc: "腕を頭上に掲げながら身構えます。" },
+            { id: 10, name: "転身搬攔捶", pinyin: "zhuǎn shēn bān lán chuí", meaning: "転身搬攔捶", desc: "回転し、攻撃を受け流しながら突きます。" },
+            { id: 11, name: "如封似閉", pinyin: "rú fēng sì bì", meaning: "如封似閉", desc: "両手を前方に押し出し、相手からの力を包み込みます。" },
+            { id: 12, name: "十字手", pinyin: "shí zì shǒu", meaning: "十字手", desc: "両腕をクロスさせながら立ち上がります。" },
+            { id: 13, name: "収勢", pinyin: "shōu shì", meaning: "収勢", desc: "最初の自然な姿勢に戻ります。" }
         ];
 
         const grade1Forms = [
@@ -278,11 +261,11 @@
             ...grade2Forms.slice(1, 13)
         ];
 
-        let completedItems = JSON.parse(localStorage.getItem('taiji_completed_v2') || '{}');
-        let formImages = JSON.parse(localStorage.getItem('taiji_images_v2') || '{}');
-        let formMemos = JSON.parse(localStorage.getItem('taiji_memos_v2') || '{}');
+        // 高速化用ローカルキャッシュ
+        let completedItems = JSON.parse(localStorage.getItem('taiji_completed_v3') || '{}');
+        let formImages = JSON.parse(localStorage.getItem('taiji_images_v3') || '{}');
+        let formMemos = JSON.parse(localStorage.getItem('taiji_memos_v3') || '{}');
 
-        // Crop state
         let currentUploadUniqueId = '';
         let currentUploadGradeKey = '';
         let currentUploadItem = null;
@@ -291,6 +274,49 @@
         let cropScale = 1;
         let isDragging = false;
         let startDrag = { x: 0, y: 0 };
+
+        // ★ アプリ起動時にGoogleスプレッドシートからマスターデータを同期
+        async function fetchMasterData() {
+            const statusEl = document.getElementById('sync-status');
+            if (!GAS_ENDPOINT_URL || GAS_ENDPOINT_URL.includes('YOUR_GAS')) {
+                statusEl.innerText = "オフライン表示";
+                return;
+            }
+            try {
+                statusEl.innerText = "同期中...";
+                const res = await fetch(GAS_ENDPOINT_URL);
+                const json = await res.json();
+                if (json.status === 'success' && json.data) {
+                    completedItems = json.data.completed || {};
+                    formImages = json.data.images || {};
+                    formMemos = json.data.memos || {};
+
+                    // ローカルキャッシュ更新
+                    localStorage.setItem('taiji_completed_v3', JSON.stringify(completedItems));
+                    localStorage.setItem('taiji_images_v3', JSON.stringify(formImages));
+                    localStorage.setItem('taiji_memos_v3', JSON.stringify(formMemos));
+
+                    statusEl.innerText = "クラウド同期完了";
+                    renderAllLists();
+                }
+            } catch (err) {
+                console.error("Master data fetch error:", err);
+                statusEl.innerText = "キャッシュ表示中";
+            }
+        }
+
+        // バックグラウンドで状態を保存
+        async function saveStateToCloud(key, type, value) {
+            if (!GAS_ENDPOINT_URL || GAS_ENDPOINT_URL.includes('YOUR_GAS')) return;
+            try {
+                await fetch(GAS_ENDPOINT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'save_state', key, type, value })
+                });
+            } catch (err) {
+                console.error("Save state error:", err);
+            }
+        }
 
         function switchTab(tabId) {
             ['intro', 'grade5', 'grade4', 'grade3', 'grade2', 'grade1'].forEach(id => {
@@ -308,10 +334,7 @@
         }
 
         function speakChinese(text, lang = 'zh-CN') {
-            if (!('speechSynthesis' in window)) {
-                alert('お使いのブラウザは音声合成に対応していません。');
-                return;
-            }
+            if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang;
@@ -334,12 +357,10 @@
             const container = document.getElementById('keywords-list');
             if (!container) return;
             container.innerHTML = "";
-
             keywords.forEach(item => {
                 const uniqueId = `kw_${item.id}`;
                 const hasImg = formImages[uniqueId] && formImages[uniqueId].length > 0;
                 const hasMemo = formMemos[uniqueId] && formMemos[uniqueId].trim().length > 0;
-
                 const card = document.createElement('div');
                 card.className = "bg-emerald-50 p-5 rounded-xl border border-emerald-200 flex flex-col justify-between cursor-pointer hover:bg-emerald-100/60 transition shadow-sm";
                 card.onclick = () => openDetail(uniqueId, 'intro', item);
@@ -350,7 +371,7 @@
                             <div class="flex gap-2">
                                 ${hasMemo ? '<span class="text-xs bg-amber-100 text-amber-900 px-2 py-1 rounded-full font-bold self-center">📝メモ有</span>' : ''}
                                 ${hasImg ? '<span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-1 rounded-full font-bold self-center">📷写真有</span>' : ''}
-                                <button onclick="event.stopPropagation(); speakChinese('${item.name === '調心' ? '調心' : (item.name === '調息' ? '調息' : '調身')}', 'zh-CN')" class="text-sm bg-emerald-700 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-800 transition font-medium shadow-sm">🔊 発音</button>
+                                <button onclick="event.stopPropagation(); speakChinese('${item.name}')" class="text-sm bg-emerald-700 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-800 transition font-medium shadow-sm">🔊 発音</button>
                             </div>
                         </div>
                         <h3 class="font-bold text-base text-emerald-950">${item.name} (${item.meaning})</h3>
@@ -366,12 +387,10 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = "";
-
             dataArray.forEach(item => {
                 const uniqueId = `${prefix}_${item.id}`;
                 const hasImg = formImages[uniqueId] && formImages[uniqueId].length > 0;
                 const hasMemo = formMemos[uniqueId] && formMemos[uniqueId].trim().length > 0;
-
                 const card = document.createElement('div');
                 card.className = "p-4 bg-slate-50 rounded-2xl border border-slate-300 flex flex-col justify-between cursor-pointer hover:bg-emerald-50/40 transition shadow-sm";
                 card.onclick = () => openDetail(uniqueId, 'intro', item);
@@ -399,7 +418,6 @@
             const listEl = document.getElementById(`list-${gradeKey}`);
             if (!listEl) return;
             listEl.innerHTML = "";
-            
             let completedCount = 0;
             const totalEl = document.getElementById(`total-${gradeKey}`);
             if (totalEl) totalEl.innerText = dataArray.length;
@@ -412,13 +430,12 @@
                 const bgClass = completedItems[uniqueId] ? 'bg-emerald-50/70 border-emerald-300' : 'bg-white border-slate-200';
                 const hasImg = formImages[uniqueId] && formImages[uniqueId].length > 0;
                 const hasMemo = formMemos[uniqueId] && formMemos[uniqueId].trim().length > 0;
-                const displayNum = index + 1;
 
                 const card = document.createElement('div');
                 card.className = `p-4 md:p-5 rounded-2xl border ${bgClass} flex items-center justify-between gap-4 transition shadow-sm`;
                 card.innerHTML = `
                     <div class="flex items-center gap-4 flex-grow cursor-pointer" onclick="openDetail('${uniqueId}', '${gradeKey}', ${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                        <span class="w-10 h-10 flex-shrink-0 bg-emerald-100 text-emerald-900 font-extrabold text-base rounded-full flex items-center justify-center shadow-sm">${displayNum}</span>
+                        <span class="w-10 h-10 flex-shrink-0 bg-emerald-100 text-emerald-900 font-extrabold text-base rounded-full flex items-center justify-center shadow-sm">${index + 1}</span>
                         <div>
                             <div class="flex items-center gap-2.5 flex-wrap">
                                 <h3 class="font-bold text-lg text-slate-900">${item.name}</h3>
@@ -430,9 +447,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3">
-                        <button onclick="event.stopPropagation(); speakChinese('${item.name}')" class="p-3 bg-emerald-100 text-emerald-800 hover:bg-emerald-200 rounded-xl text-sm font-bold flex items-center gap-1 transition shadow-sm" title="中国語の発音を聞く">
-                            🔊 発音
-                        </button>
+                        <button onclick="event.stopPropagation(); speakChinese('${item.name}')" class="p-3 bg-emerald-100 text-emerald-800 hover:bg-emerald-200 rounded-xl text-sm font-bold flex items-center gap-1 transition shadow-sm">🔊 発音</button>
                         <input type="checkbox" ${isChecked} onchange="toggleComplete('${uniqueId}', this.checked, '${gradeKey}')" class="w-6 h-6 text-emerald-700 rounded-md border-slate-300 focus:ring-emerald-600 cursor-pointer">
                     </div>
                 `;
@@ -444,7 +459,8 @@
 
         function toggleComplete(uniqueId, status, gradeKey) {
             completedItems[uniqueId] = status;
-            localStorage.setItem('taiji_completed_v2', JSON.stringify(completedItems));
+            localStorage.setItem('taiji_completed_v3', JSON.stringify(completedItems));
+            saveStateToCloud(uniqueId, 'completed', status);
             renderAllLists();
         }
 
@@ -467,12 +483,9 @@
                     ${item.desc}
                 </div>
 
-                <!-- Memo Section -->
                 <div class="space-y-2">
-                    <label class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                        <span>📝</span> 先生に教わったこと・注意点メモ
-                    </label>
-                    <textarea id="memo-textarea" rows="3" oninput="saveMemo('${uniqueId}', this.value)" placeholder="例：重心を低く保つ。腰から回すように意識する。" class="w-full text-base p-3.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-amber-50/30">${memoText}</textarea>
+                    <label class="text-sm font-bold text-slate-800 flex items-center gap-1.5">📝 先生に教わったこと・注意点メモ</label>
+                    <textarea id="memo-textarea" rows="3" oninput="saveMemo('${uniqueId}', this.value)" placeholder="例：重心を低く保つ。" class="w-full text-base p-3.5 rounded-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 bg-amber-50/30">${memoText}</textarea>
                 </div>
                 
                 <div class="space-y-3">
@@ -506,13 +519,17 @@
             document.getElementById('detail-modal').classList.remove('hidden');
         }
 
+        let memoTimeout = null;
         function saveMemo(uniqueId, text) {
             formMemos[uniqueId] = text;
-            localStorage.setItem('taiji_memos_v2', JSON.stringify(formMemos));
+            localStorage.setItem('taiji_memos_v3', JSON.stringify(formMemos));
+            clearTimeout(memoTimeout);
+            memoTimeout = setTimeout(() => {
+                saveStateToCloud(uniqueId, 'memos', text);
+            }, 800);
             renderAllLists();
         }
 
-        // --- Crop Functionality with Zoom Slider ---
         function initCrop(event, uniqueId, gradeKey, item) {
             const file = event.target.files[0];
             if (!file) return;
@@ -528,13 +545,10 @@
                     const canvas = document.getElementById('crop-canvas');
                     canvas.width = 300;
                     canvas.height = 300;
-                    
                     cropScale = Math.max(300 / cropImageObj.width, 300 / cropImageObj.height);
                     document.getElementById('zoom-slider').value = cropScale;
-
                     cropOffset.x = (300 - cropImageObj.width * cropScale) / 2;
                     cropOffset.y = (300 - cropImageObj.height * cropScale) / 2;
-
                     drawCropCanvas();
                     document.getElementById('crop-modal').classList.remove('hidden');
                 };
@@ -548,10 +562,8 @@
             if (!cropImageObj) return;
             const oldScale = cropScale;
             cropScale = parseFloat(val);
-
             cropOffset.x = 150 - (150 - cropOffset.x) * (cropScale / oldScale);
             cropOffset.y = 150 - (150 - cropOffset.y) * (cropScale / oldScale);
-
             drawCropCanvas();
         }
 
@@ -588,63 +600,51 @@
             ctx.drawImage(cropImageObj, cropOffset.x, cropOffset.y, cropImageObj.width * cropScale, cropImageObj.height * cropScale);
         }
 
-        // ★ GAS連携対応版：画像の保存とアップロード（fileId付き保存）
         async function confirmCrop() {
             const canvas = document.getElementById('crop-canvas');
             const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
             const btn = document.getElementById('btn-confirm-crop');
             const originalText = btn.innerText;
 
-            // URL未指定時のフォールバック（ローカル保存）
-            if (!GAS_ENDPOINT_URL || GAS_ENDPOINT_URL.includes('YOUR_GAS_DEPLOYMENT_URL_HERE')) {
-                if (!formImages[currentUploadUniqueId]) {
-                    formImages[currentUploadUniqueId] = [];
-                }
-                formImages[currentUploadUniqueId].push({ url: croppedDataUrl, fileId: null });
-                localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
-                document.getElementById('crop-modal').classList.add('hidden');
-                openDetail(currentUploadUniqueId, currentUploadGradeKey, currentUploadItem);
-                renderAllLists();
-                return;
-            }
-
             try {
                 btn.innerText = "ドライブに保存中...";
                 btn.disabled = true;
 
-                const payload = JSON.stringify({
-                    image: croppedDataUrl,
-                    filename: `${currentUploadUniqueId}_${Date.now()}.jpg`,
-                    mimeType: 'image/jpeg'
-                });
-
+                // 1. Googleドライブへ画像をポスト
                 const response = await fetch(GAS_ENDPOINT_URL, {
                     method: 'POST',
-                    body: payload
+                    body: JSON.stringify({
+                        action: 'upload_image',
+                        image: croppedDataUrl,
+                        filename: `${currentUploadUniqueId}_${Date.now()}.jpg`,
+                        mimeType: 'image/jpeg'
+                    })
                 });
 
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    if (!formImages[currentUploadUniqueId]) {
-                        formImages[currentUploadUniqueId] = [];
-                    }
-                    // URLとfileIdの両方をオブジェクトとして保存
+                    if (!formImages[currentUploadUniqueId]) formImages[currentUploadUniqueId] = [];
+                    
                     formImages[currentUploadUniqueId].push({
                         url: result.url,
                         fileId: result.fileId
                     });
-                    localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
+
+                    localStorage.setItem('taiji_images_v3', JSON.stringify(formImages));
+                    
+                    // 2. クラウド（スプレッドシート）にも画像の最新リストを更新保存
+                    await saveStateToCloud(currentUploadUniqueId, 'images', formImages[currentUploadUniqueId]);
 
                     document.getElementById('crop-modal').classList.add('hidden');
                     openDetail(currentUploadUniqueId, currentUploadGradeKey, currentUploadItem);
                     renderAllLists();
                 } else {
-                    alert('Googleドライブへの保存に失敗しました: ' + (result.message || '不明なエラー'));
+                    alert('保存に失敗しました: ' + (result.message || '不明なエラー'));
                 }
             } catch (err) {
                 console.error('Fetch error:', err);
-                alert('通信エラーが発生しました。インターネット接続とGAS設定を確認してください。');
+                alert('通信エラーが発生しました。');
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
@@ -664,32 +664,27 @@
             document.getElementById('zoom-modal').classList.add('hidden');
         }
 
-        // ★ 画像削除機能（ローカル＆Googleドライブの両方から削除）
         async function deleteImage(uniqueId, imgIndex, gradeKey, item) {
-            if (!confirm("この写真を削除しますか？\n（Googleドライブからも削除されます）")) {
-                return;
-            }
+            if (!confirm("この写真を削除しますか？\n（Googleドライブからも削除されます）")) return;
 
             const targetImage = formImages[uniqueId] ? formImages[uniqueId][imgIndex] : null;
             const fileId = targetImage && typeof targetImage === 'object' ? targetImage.fileId : null;
 
-            // 1. ローカル領域（LocalStorage）から削除
             if (formImages[uniqueId]) {
                 formImages[uniqueId].splice(imgIndex, 1);
-                localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
+                localStorage.setItem('taiji_images_v3', JSON.stringify(formImages));
                 openDetail(uniqueId, gradeKey, item);
                 renderAllLists();
+                
+                // クラウド上の画像リスト更新
+                saveStateToCloud(uniqueId, 'images', formImages[uniqueId]);
             }
 
-            // 2. Googleドライブ側からも削除（fileIdが存在する場合）
-            if (fileId && GAS_ENDPOINT_URL && !GAS_ENDPOINT_URL.includes('YOUR_GAS_DEPLOYMENT_URL_HERE')) {
+            if (fileId && GAS_ENDPOINT_URL && !GAS_ENDPOINT_URL.includes('YOUR_GAS')) {
                 try {
                     await fetch(GAS_ENDPOINT_URL, {
                         method: 'POST',
-                        body: JSON.stringify({
-                            action: 'delete',
-                            fileId: fileId
-                        })
+                        body: JSON.stringify({ action: 'delete_image', fileId: fileId })
                     });
                 } catch (err) {
                     console.error('Drive delete error:', err);
@@ -703,12 +698,12 @@
 
         window.onclick = function(event) {
             const detailModal = document.getElementById('detail-modal');
-            if (event.target === detailModal) {
-                closeModal();
-            }
+            if (event.target === detailModal) closeModal();
         }
 
+        // 初期化：即座に画面描画＆バックグラウンドでクラウドから最新同期
         renderAllLists();
+        fetchMasterData();
     </script>
 </body>
 </html>
