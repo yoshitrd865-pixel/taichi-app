@@ -198,7 +198,7 @@
 
     <script>
         // ★発行したGASのウェブアプリURLを指定
-        const GAS_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbyaIu5NXaArAN99chR81qG2_iJCl5DM18icyVc-2pQBPBuTofRGiGzr3pF5Q-8lzh-mUg/exec';
+        const GAS_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwLW-L95JLS9d7ysxEbJyARPjeosnhiyb5kG18D6h6xqL9WN1GBqU6DnUufBfhwkarq-w/exec';
 
         const keywords = [
             { id: "kw_1", name: "調心", pinyin: "Tiáo xīn", meaning: "心の調整", desc: "無心になって動作に集中し、心を静めて意識を動作に導きます。", icon: "🧠" },
@@ -484,12 +484,15 @@
                         </label>
                     </div>
                     <div id="image-gallery" class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
-                        ${images.map((img, idx) => `
-                            <div class="relative group aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-300 shadow-sm cursor-pointer" onclick="openZoom('${img}')">
-                                <img src="${img}" class="w-full h-full object-cover">
-                                <button onclick="event.stopPropagation(); deleteImage('${uniqueId}', ${idx}, '${gradeKey}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center shadow transition">✕</button>
-                            </div>
-                        `).join('')}
+                        ${images.map((imgObj, idx) => {
+                            const srcUrl = typeof imgObj === 'string' ? imgObj : imgObj.url;
+                            return `
+                                <div class="relative group aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-300 shadow-sm cursor-pointer" onclick="openZoom('${srcUrl}')">
+                                    <img src="${srcUrl}" class="w-full h-full object-cover">
+                                    <button onclick="event.stopPropagation(); deleteImage('${uniqueId}', ${idx}, '${gradeKey}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center shadow transition">✕</button>
+                                </div>
+                            `;
+                        }).join('')}
                         ${images.length === 0 ? '<div class="col-span-full text-center py-6 text-sm text-slate-500 bg-slate-50 rounded-2xl border border-dashed border-slate-300 font-medium">写真がまだ登録されていません</div>' : ''}
                     </div>
                 </div>
@@ -585,7 +588,7 @@
             ctx.drawImage(cropImageObj, cropOffset.x, cropOffset.y, cropImageObj.width * cropScale, cropImageObj.height * cropScale);
         }
 
-        // ★ CORS回避・Googleドライブ保存処理
+        // ★ GAS連携対応版：画像の保存とアップロード（fileId付き保存）
         async function confirmCrop() {
             const canvas = document.getElementById('crop-canvas');
             const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
@@ -597,7 +600,7 @@
                 if (!formImages[currentUploadUniqueId]) {
                     formImages[currentUploadUniqueId] = [];
                 }
-                formImages[currentUploadUniqueId].push(croppedDataUrl);
+                formImages[currentUploadUniqueId].push({ url: croppedDataUrl, fileId: null });
                 localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
                 document.getElementById('crop-modal').classList.add('hidden');
                 openDetail(currentUploadUniqueId, currentUploadGradeKey, currentUploadItem);
@@ -615,7 +618,6 @@
                     mimeType: 'image/jpeg'
                 });
 
-                // CORSプリフライト回避のため headers を簡略化して POST 送信
                 const response = await fetch(GAS_ENDPOINT_URL, {
                     method: 'POST',
                     body: payload
@@ -627,8 +629,11 @@
                     if (!formImages[currentUploadUniqueId]) {
                         formImages[currentUploadUniqueId] = [];
                     }
-                    // 直リンクURLを追加してローカルストレージへ保存
-                    formImages[currentUploadUniqueId].push(result.url);
+                    // URLとfileIdの両方をオブジェクトとして保存
+                    formImages[currentUploadUniqueId].push({
+                        url: result.url,
+                        fileId: result.fileId
+                    });
                     localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
 
                     document.getElementById('crop-modal').classList.add('hidden');
@@ -639,7 +644,7 @@
                 }
             } catch (err) {
                 console.error('Fetch error:', err);
-                alert('通信エラーが発生しました。ブラウザのデベロッパーツール(F12)を確認してください。');
+                alert('通信エラーが発生しました。インターネット接続とGAS設定を確認してください。');
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
@@ -659,12 +664,36 @@
             document.getElementById('zoom-modal').classList.add('hidden');
         }
 
-        function deleteImage(uniqueId, imgIndex, gradeKey, item) {
+        // ★ 画像削除機能（ローカル＆Googleドライブの両方から削除）
+        async function deleteImage(uniqueId, imgIndex, gradeKey, item) {
+            if (!confirm("この写真を削除しますか？\n（Googleドライブからも削除されます）")) {
+                return;
+            }
+
+            const targetImage = formImages[uniqueId] ? formImages[uniqueId][imgIndex] : null;
+            const fileId = targetImage && typeof targetImage === 'object' ? targetImage.fileId : null;
+
+            // 1. ローカル領域（LocalStorage）から削除
             if (formImages[uniqueId]) {
                 formImages[uniqueId].splice(imgIndex, 1);
                 localStorage.setItem('taiji_images_v2', JSON.stringify(formImages));
                 openDetail(uniqueId, gradeKey, item);
                 renderAllLists();
+            }
+
+            // 2. Googleドライブ側からも削除（fileIdが存在する場合）
+            if (fileId && GAS_ENDPOINT_URL && !GAS_ENDPOINT_URL.includes('YOUR_GAS_DEPLOYMENT_URL_HERE')) {
+                try {
+                    await fetch(GAS_ENDPOINT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action: 'delete',
+                            fileId: fileId
+                        })
+                    });
+                } catch (err) {
+                    console.error('Drive delete error:', err);
+                }
             }
         }
 
